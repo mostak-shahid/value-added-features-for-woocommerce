@@ -160,7 +160,7 @@ function render_meta_on_cart_and_checkout( $cart_data, $cart_item ){
     if( !empty( $cart_data ) ) {
         $custom_items = $cart_data;
     }
-    if( isset( $cart_item['custom_data'] ) ) {
+    if( isset( $cart_item['custom_data']['value'] ) AND  $cart_item['custom_data']['value']) {
         $custom_items[] = array(
             'name' => $cart_item['custom_data']['label'],
             'value' => $cart_item['custom_data']['value'],
