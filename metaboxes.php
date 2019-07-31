@@ -39,7 +39,7 @@ function mos_testimonial_metaboxes() {
     $mos_vaffw_details->add_group_field( $mos_vaffw_details_id, array(
         'name' => 'Feature value',
         'id'   => $prefix . 'feature_value',
-        'type' => 'text_money',
+        'type' => 'text',
     ));       
 
 }

@@ -72,7 +72,6 @@ function  set_session_prices ( $woo_data , $values , $key ) {
 add_action('woocommerce_before_add_to_cart_button', 'my_custom_checkout_field');
 function my_custom_checkout_field() {
     global $product;
-
     $product_id = $product->get_id();
 
     // Get the field name of InputText1
@@ -81,7 +80,7 @@ function my_custom_checkout_field() {
     $details_group = get_post_meta($product_id, '_mos_vaffw_details_group', true);
     //_mos_vaffw_details_group[0][_mos_vaffw_feature_title]
     //_mos_vaffw_details_group[0][_mos_vaffw_feature_value]
-    $label = "Warranty Price";
+    // $label = "Warranty Price";
 	$start_u = "<label>";
 	$end_u = "</label>";
     if( ! empty( $option_name ) ){
@@ -94,7 +93,7 @@ function my_custom_checkout_field() {
     		$end_u = '</option>';
     	}
 
-    	echo '<div id="InputText1">'.$label.'</div>';
+    	echo '<div id="InputText1">'.$option_name.'</div>';
 
     	if (sizeof($details_group)){
     		echo $start;
@@ -108,7 +107,7 @@ function my_custom_checkout_field() {
     		echo $end;
     	}
         // echo '<div id="InputText1">
-        //     <label><input type="checkbox" name="custom_slug" value="50">'.$label.':</label>
+        //     <label><input type="checkbox" name="custom_slug" value="50">'.$option_name.':</label>
         // </div>';
     }
 }
@@ -116,10 +115,11 @@ function my_custom_checkout_field() {
 // Store custom field label and value in cart item data
 add_filter( 'woocommerce_add_cart_item_data', 'save_my_custom_checkout_field', 10, 2 );
 function save_my_custom_checkout_field( $cart_item_data, $product_id ) {
+	$option_name = get_post_meta($product_id, '_mos_vaffw_option_name', true);
     if( isset( $_REQUEST['custom_slug'] ) ) {
         //$cart_item_data['custom_data']['label'] = get_post_meta($product_id, 'InputText1', true);
-        $cart_item_data['custom_data']['label'] = "Warranty Price";
-        $cart_item_data['custom_data']['value'] = sanitize_text_field( $_REQUEST['custom_slug'] );
+        $cart_item_data['custom_data']['label'] = $option_name;
+        $cart_item_data['custom_data']['value'] = $_REQUEST['custom_slug'];
         $cart_item_data['custom_data']['ukey'] = md5( microtime().rand() );
     }
     return $cart_item_data;
@@ -130,10 +130,12 @@ function add_value_calculate_totals( $cart_obj ) {
 		return;
 	}
 	// Iterate through each cart item
+
+
 	
 	foreach( $cart_obj->get_cart() as $key=>$value ) {
 		if( isset( $value['custom_data']['value'] ) ) {
-			$c_price = intval($value['custom_data']['value']);
+			$c_price = $value['custom_data']['value'];
 			$product = wc_get_product( $value['product_id'] );
 			$price = $product->get_price();
 			$f_price = $price + $c_price;
