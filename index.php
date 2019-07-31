@@ -83,6 +83,7 @@ function my_custom_checkout_field() {
     $option_name = get_post_meta($product_id, '_mos_vaffw_option_name', true);
     $option_app = get_post_meta($product_id, '_mos_vaffw_option_app', true);
     $details_group = get_post_meta($product_id, '_mos_vaffw_details_group', true);
+    // var_dump($details_group);
     //_mos_vaffw_details_group[0][_mos_vaffw_feature_title]
     //_mos_vaffw_details_group[0][_mos_vaffw_feature_value]
     // $label = "Warranty Price";
@@ -99,6 +100,7 @@ function my_custom_checkout_field() {
     	}
 
     	echo '<div id="ex-meta">';
+    	echo '<div class="ex-meta-unit">';
     	echo '<label class="ex-meta-label" for="ex-meta">'.$option_name.'</label>';
     	if (sizeof($details_group)){
     		echo $start;
@@ -110,7 +112,9 @@ function my_custom_checkout_field() {
     			echo $end_u;				
     		}
     		echo $end;
+    		echo '<input type="hidden" name="custom_slug_title" value="'.$details_group['0']['_mos_vaffw_feature_title'].'">';
     	}
+    	echo '</div>';
     	echo '</div>';
         // echo '<div id="InputText1">
         //     <label><input type="checkbox" name="custom_slug" value="50">'.$option_name.':</label>
@@ -125,6 +129,7 @@ function save_my_custom_checkout_field( $cart_item_data, $product_id ) {
     if( isset( $_REQUEST['custom_slug'] ) ) {
         //$cart_item_data['custom_data']['label'] = get_post_meta($product_id, 'InputText1', true);
         $cart_item_data['custom_data']['label'] = $option_name;
+        $cart_item_data['custom_data']['title'] = $_REQUEST['custom_slug_title'];
         $cart_item_data['custom_data']['value'] = $_REQUEST['custom_slug'];
         $cart_item_data['custom_data']['ukey'] = md5( microtime().rand() );
     }
@@ -163,7 +168,7 @@ function render_meta_on_cart_and_checkout( $cart_data, $cart_item ){
     if( isset( $cart_item['custom_data']['value'] ) AND  $cart_item['custom_data']['value']) {
         $custom_items[] = array(
             'name' => $cart_item['custom_data']['label'],
-            'value' => $cart_item['custom_data']['value'],
+            'value' => $cart_item['custom_data']['title'] . ': ' . $cart_item['custom_data']['value'],
         );
     }
     return $custom_items;
