@@ -8,6 +8,11 @@ Author: Md. Mostak Shahid
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+function mos_7427_enqueue_scripts(){
+	wp_enqueue_style( 'mos-7427', plugins_url( 'css/plugin.css', __FILE__ ) );
+	wp_enqueue_script( 'mos-7427', plugins_url( 'js/plugin.js', __FILE__ ), array('jquery') );
+}
+add_action( 'wp_enqueue_scripts', 'mos_7427_enqueue_scripts' );
 require_once( plugin_dir_path( __FILE__ ) . 'plugins/metabox/init.php');
 require_once( plugin_dir_path( __FILE__ ) . 'metaboxes.php');
 //Try 1
@@ -93,8 +98,8 @@ function my_custom_checkout_field() {
     		$end_u = '</option>';
     	}
 
-    	echo '<div id="InputText1">'.$option_name.'</div>';
-
+    	echo '<div id="ex-meta">';
+    	echo '<label class="ex-meta-label" for="ex-meta">'.$option_name.'</label>';
     	if (sizeof($details_group)){
     		echo $start;
     		foreach ($details_group as $value) {
@@ -106,6 +111,7 @@ function my_custom_checkout_field() {
     		}
     		echo $end;
     	}
+    	echo '</div>';
         // echo '<div id="InputText1">
         //     <label><input type="checkbox" name="custom_slug" value="50">'.$option_name.':</label>
         // </div>';

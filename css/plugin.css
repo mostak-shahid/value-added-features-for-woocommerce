@@ -1,0 +1,2 @@
+#ex-meta{margin-bottom: 10px;}
+#ex-meta input[type=text], #ex-meta input[type=password], #ex-meta input[type=email], #ex-meta input[type=number], #ex-meta input[type=url], #ex-meta input[type=tel], #ex-meta input[type=file], #ex-meta input[type=search], #ex-meta textarea,  #ex-meta select{width: 100%;} 
